@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,16 +28,30 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     public bool isGrounded;
 
+    public int maxHP = 100;
+    private int currentHP;
+
+    public Slider hpSlider;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
         pov = virtualCam.GetCinemachineComponent<CinemachinePOV>();
         // 시작할 때 카메라의 FOV를 걷기 상태의 FOV로 설정
         virtualCam.m_Lens.FieldOfView = walkFOV;
+
+        currentHP = maxHP;
+        hpSlider.value = 1f;
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            pov.m_HorizontalAxis.Value = transform.eulerAngles.y;
+            pov.m_VerticalAxis.Value = 0f;
+        }
+
         if (cameraSwitcher != null && cameraSwitcher.usingFreeLook)
         {
             return; // Update 함수를 즉시 종료하여 아래의 모든 로직(이동, 점프, 회전 등)을 실행하지 않음
@@ -75,6 +90,22 @@ public class PlayerController : MonoBehaviour
 
         RotateToCameraDirection();
         ApplyGravityAndJump();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        hpSlider.value = (float)currentHP / maxHP;
+
+        if(currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 
     // --- 가독성을 위해 로직을 함수로 분리 ---
