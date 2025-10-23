@@ -1,0 +1,10 @@
+void Start()
+{
+    controller = GetComponent<CharacterController>();
+    pov = virtualCam.GetCinemachineComponent<CinemachinePOV>();
+    // Virtual Camera의 pov 컴포넌트 가져오기
+
+    maxHP = GameManager.instance.playerMaxHP;
+    currentHP = maxHP;
+    hpSlider.value = 1f;
+}

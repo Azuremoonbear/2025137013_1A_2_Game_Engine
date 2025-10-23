@@ -139,4 +139,16 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<SceneObject>() != null)
+        {
+            string info = other.GetComponent<SceneObject>().objectInfo;
+            if (info.StartsWith("Scene"))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(info);
+            }
+        }
+    }
 }
