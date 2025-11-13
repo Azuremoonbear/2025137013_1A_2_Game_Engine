@@ -65,5 +65,6 @@ public class NoiseVoxelMap : MonoBehaviour
         // blockPrefab -> prefabToPlace ·Î ¼öÁ¤
         var go = Instantiate(prefabToPlace, new Vector3(x, y, z), Quaternion.identity, transform);
         go.name = $"B_{x}_{y}_{z}";
+        go.tag = "Block";
     }
 }
